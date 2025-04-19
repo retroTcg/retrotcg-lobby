@@ -1,0 +1,15 @@
+a:link {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.mytoolbar .p-toolbar {
+  border: 5px solid hsl(0, 0%, 40%) !important;
+  padding: 5px !important;
+  background: hsl(0deg 0% 0%) !important;
+  outline: 5px solid hsl(0, 0%, 60%) !important;
+  box-shadow: 0 0 0 10px hsl(0deg 0% 80%), 0 0 0 15px hsl(0deg 0% 90%) !important;
+}

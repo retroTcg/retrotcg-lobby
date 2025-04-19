@@ -1,0 +1,49 @@
+<div #smallStackRemaining *ngIf="stack.length<=10; else largeStackRemaining">
+    <ng-container>
+        <div *ngIf="stackType === ALLSTACKTYPES.PRIZE || stackType === ALLSTACKTYPES.DECK else visibleStackSm">
+            <img [ngClass]="{'hoverCard':true, 'imageDiv':smallDisplay, 'imageDivMed': !smallDisplay}"
+                src="{{backOfCard}}">
+        </div>
+    </ng-container>
+
+
+
+</div>
+
+<ng-template #largeStackRemaining>
+    <ng-container>
+        <div *ngIf="stackType === ALLSTACKTYPES.PRIZE || stackType === ALLSTACKTYPES.DECK else visibleStackLg">
+
+            <img [ngClass]="{'hoverCard':true, 'imageDiv':smallDisplay, 'imageDivMed': !smallDisplay}"
+                src="{{backOfCard}}">
+
+        </div>
+    </ng-container>
+
+
+
+</ng-template>
+
+<!-- visible stacks below have more intense logic regarding focused view and selecting cards-->
+<ng-template #visibleStackSm>
+    <div (clickOutside)="onClickedOutside($event)">
+        <div style="display: inline;" *ngFor="let item of stack.reverse(); let i = index" (click)="onStackClicked()">
+
+            <img [ngClass]="{'stackedCards': i >0 && smallDisplay || i > 0 && !smallDisplay && thisStackIsFocused && getIsAStackInFocus(),'stackedCardsMed': i >0 && !smallDisplay && !thisStackIsFocused, 'stackedCardsSpread': i >0 && smallDisplay && thisStackIsFocused && getIsAStackInFocus(), 'hoverCard':true, 'imageDiv':smallDisplay, 'imageDivMed': !smallDisplay}"
+                src="{{item.imageUrlHiRes}}" (click)="setCardFocus(i)">
+        </div>
+    </div>
+
+</ng-template>
+<!--TODO Test and update this LG stack for focus according to our design for small screens/centered -->
+<ng-template #visibleStackLg>
+    <div (clickOutside)="onClickedOutside($event)">
+        <div style="display: inline;" *ngFor="let item of stack.reverse(); let i = index" (click)="onStackClicked()">
+
+            <img [ngClass]="{'hoverCard':true, 'imageDiv':smallDisplay, 'imageDivMed': !smallDisplay}"
+                src="{{stack[0].imageUrlHiRes}}" (click)="setCardFocus(i)">
+        </div>
+    </div>
+
+</ng-template>
+<!--todo scenario based stack for deck search or perhaps see opponents hand card effects-->

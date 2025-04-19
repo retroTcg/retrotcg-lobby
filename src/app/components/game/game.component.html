@@ -1,0 +1,327 @@
+<div *ngIf="!invalidDisplay; else invalidDisplayView">
+  <div *ngIf="!gameStarted; else ongoingGame">
+
+    <div class="grid">
+      <div class="col-4" *ngIf="!roomConfirmation; else elseBlock">
+
+        <input type="text" placeholder="Room 1" [(ngModel)]="roomName">
+        <button (click)="joinRoom()">Join Room</button>
+
+
+      </div>
+      <div class="col-4">
+
+        <img [ngClass]="{'spinhov3D': coinStarted === true}" style="border-radius: 50%;" src="{{currentImgSrc}}">
+
+
+      </div>
+      <div class="col-4">
+        <div class="box">
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    <ng-template #elseBlock>
+      <div class="col-4">
+
+        <h1 style="display:block">You are in room: {{roomName}}</h1>
+        <button (click)="leaveRoom()">Leave Room</button>
+
+      </div>
+
+    </ng-template>
+
+
+
+    <p-dialog header="Choose Heads/Tails" (onHide)="forceCoinDecision($event)" [closeOnEscape]="false"
+      [closable]="false" [(visible)]="displayCoinDeciderDialog" [style]="{width: '50vw'}">
+      <h1>Select Heads or Tails, winner will decide who goes first</h1>
+      <ng-template pTemplate="footer">
+        <div class="p-grid">
+          <div class="p-col-6">
+            <p-button class="dialogButtonFooter" icon="pi pi-check" (click)="socketEmitCoinDecision('HEADS')"
+              label="Heads" styleClass="p-button-text">
+            </p-button>
+
+
+          </div>
+
+          <div class="p-col-6">
+
+
+            <p-button class="dialogButtonFooter" icon="pi pi-check" (click)="socketEmitCoinDecision('TAILS')"
+              label="Tails" styleClass="p-button-text">
+            </p-button>
+          </div>
+
+
+        </div>
+
+
+      </ng-template>
+    </p-dialog>
+
+
+
+
+    <p-dialog header="Please Wait" [closeOnEscape]="false" [closable]="false" [(visible)]="displayCoinWaiterDialog"
+      [style]="{width: '50vw'}">
+
+      <h1>Please wait... other player deciding heads/tails, the winner will decide who plays first.</h1>
+      <ng-template pTemplate="footer">
+        <div style="text-align: center;">
+          <p-progressSpinner [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8"
+            fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+        </div>
+
+
+
+      </ng-template>
+    </p-dialog>
+
+
+
+    <p-dialog header="Coin Result" (onHide)="forceCoinDecision($event)" [closeOnEscape]="false" [closable]="false"
+      [(visible)]="displayCoinResultDialog" [style]="{width: '50vw'}">
+      <h1>{{coinResultMsg}}. Please Wait for server to generate starting hands...</h1>
+
+    </p-dialog>
+  </div>
+
+
+  <ng-template #ongoingGame>
+    <!--TODO create 2 equally sized grids representing both sides of field, mobile responsive up to large monitors...-->
+    <div #game>
+      <!--2.1st half of viewport after 1 is created and taking up 50 percent vw-->
+      <div class="grid" style="height:50vh">
+
+        <!-- Opp deck and bnech-->
+        <div class="col-12">
+          <div class="grid">
+            <!--Deck only display 1, layer number overtop for deckcount-->
+            <div class="col-2" style="text-align: center;">
+              <div style="display: inline;" [style.opacity]="opacityControl">
+                <img [ngClass]="{'hoverCard':true, 'imageDiv':smallDisplay, 'imageDivMed': !smallDisplay}"
+                  src="{{backOfCard}}">
+              </div>
+            </div>
+
+            <div class="col-9" style="text-align: left;">
+              <!--TODO need to guarantee space for X bench cards, 8 is threshold on small screens pcol9 nd to place overlay of count on bench card let them expand later...-->
+              <div class="grid">
+                <div *ngFor="let bench of currentPerspective.oppBench; let k = index" class="col-2"
+                  [ngClass]="{'col-offset-1': k===0}">
+                  <!-- (requestCardMoveOrActivation)="" -->
+                  <app-card-stack [isPlayersTurn] = "currentPerspective.isTurn" [style.opacity]="opacityControl"
+                    [ngClass]="{'focusedStack0': k === 0 && getFocusMapReference().oppbench1FocusActive,
+                    'focusedStack1':  k === 1 && getFocusMapReference().oppbench2FocusActive,
+                    'focusedStack2':  k === 2 && getFocusMapReference().oppbench3FocusActive, 
+                    'focusedStack3':  k === 3 && getFocusMapReference().oppbench4FocusActive,
+                    'focusedStack4':  k === 4 && getFocusMapReference().oppbench5FocusActive
+                  }"
+                    (modifyAllButOneStackOpacityEvent)="modifyAllButOneStackOpacityParent($event)" 
+(setCardSelectedEvent)="setCardSelectedParent($event)"
+(socketEmitGameUpdateEvent)="socketEmitGameUpdateParent($event)"
+                    [stack]="currentPerspective.oppBench[k]" [stackType]="ALLSTACKTYPES.BENCH1"
+                    [stackFocusIdentifier]="ALLSTACKIDENTIFIERS.OPPBENCH1 + k">
+                  </app-card-stack >
+                  
+                </div>
+              </div>
+
+
+            </div>
+            <div class="col-1" style="visibility: hidden;">
+              <button pButton pRipple type=" button" label="Bench" (mouseover)="toggleBench($event)"
+                (touchstart)="toggleBench($event)" class="p-button-sm" [ngClass]="{'smallDisplayBtn':smallDisplay}">
+              </button>
+              <button pButton pRipple (mouseover)="toggleHand($event)" (touchstart)="toggleHand($event)" type="button"
+                label="Hand" class="p-button-warning p-button-sm" [ngClass]="{'smallDisplayBtn':smallDisplay}"></button>
+            </div>
+
+          </div>
+
+        </div>
+        <!--Opponent discard/active/prizes-->
+        <div class="col-12">
+          <div class="grid">
+            <!--Opp left to right discard/active/prizes-->
+            <!--Discard-->
+            <div class="col-2" style="text-align: center;">
+              <app-card-stack [isPlayersTurn] = "currentPerspective.isTurn" [style.opacity]="opacityControl"
+                [ngClass]="{'focusedStackDisc': getFocusMapReference().oppDiscardFocusActive}"
+                (modifyAllButOneStackOpacityEvent)="modifyAllButOneStackOpacityParent($event)" 
+(setCardSelectedEvent)="setCardSelectedParent($event)"
+(socketEmitGameUpdateEvent)="socketEmitGameUpdateParent($event)"
+                [stack]="currentPerspective.oppIsDiscarded" [stackType]="ALLSTACKTYPES.DISCARD"
+                [stackFocusIdentifier]="ALLSTACKIDENTIFIERS.OPPDISC"></app-card-stack >
+
+
+
+            </div>
+            <!--Active-->
+            <div class="col-2 col-offset-3" style="text-align: center;">
+              <app-card-stack [isPlayersTurn] = "currentPerspective.isTurn" [style.opacity]="opacityControl"
+                [ngClass]="{'focusedStack0': getFocusMapReference().oppFocusActive}"
+                (modifyAllButOneStackOpacityEvent)="modifyAllButOneStackOpacityParent($event)" 
+(setCardSelectedEvent)="setCardSelectedParent($event)"
+(socketEmitGameUpdateEvent)="socketEmitGameUpdateParent($event)"
+                [stack]="currentPerspective.oppActive" [stackType]="ALLSTACKTYPES.ACTIVE"
+                [stackFocusIdentifier]="ALLSTACKIDENTIFIERS.OPPACTIVE">
+              </app-card-stack >
+            </div>
+            <!--prizes-->
+            <div class="col-2 col-offset-3" style="text-align: center;">
+              <app-card-stack [isPlayersTurn] = "currentPerspective.isTurn" [style.opacity]="opacityControl"
+                (modifyAllButOneStackOpacityEvent)="modifyAllButOneStackOpacityParent($event)" 
+(setCardSelectedEvent)="setCardSelectedParent($event)"
+(socketEmitGameUpdateEvent)="socketEmitGameUpdateParent($event)"
+                [stack]="[].constructor(currentPerspective.oppPrizeCount)" [stackType]="ALLSTACKTYPES.PRIZE"
+                [stackFocusIdentifier]="ALLSTACKIDENTIFIERS.OPPPRIZE">
+              </app-card-stack >
+            </div>
+
+
+          </div>
+        </div>
+
+
+      </div>
+      <!--1.started second half viewport-->
+      <div class="grid" style="height:50vh">
+        <!--Own discard/active/prizes-->
+        <div class="col-12">
+          <div class="grid">
+            <!--left to right prizes/active/discard-->
+            <div class="col-2" style="text-align: center;">
+              <app-card-stack [isPlayersTurn] = "currentPerspective.isTurn" [style.opacity]="opacityControl"
+                (modifyAllButOneStackOpacityEvent)="modifyAllButOneStackOpacityParent($event)" 
+(setCardSelectedEvent)="setCardSelectedParent($event)"
+(socketEmitGameUpdateEvent)="socketEmitGameUpdateParent($event)"
+                [stack]="[].constructor(currentPerspective.prizeCount)" [stackType]="ALLSTACKTYPES.PRIZE"
+                [stackFocusIdentifier]="ALLSTACKIDENTIFIERS.PRIZE">
+              </app-card-stack >
+            </div>
+            <!--Active-->
+            <div class="col-2 col-offset-3" style="text-align: center;">
+              <app-card-stack [isPlayersTurn] = "currentPerspective.isTurn" [style.opacity]="opacityControl"
+                [ngClass]="{'focusedStack0': getFocusMapReference().activeFocusActive}"
+                (modifyAllButOneStackOpacityEvent)="modifyAllButOneStackOpacityParent($event)" 
+(setCardSelectedEvent)="setCardSelectedParent($event)"
+(socketEmitGameUpdateEvent)="socketEmitGameUpdateParent($event)"
+                [stack]="currentPerspective.active" [stackType]="ALLSTACKTYPES.ACTIVE"
+                [stackFocusIdentifier]="ALLSTACKIDENTIFIERS.ACTIVE">
+              </app-card-stack >
+            </div>
+            <!--Discard-->
+            <div class="col-2 col-offset-3" style="text-align: center;">
+              <app-card-stack [isPlayersTurn] = "currentPerspective.isTurn" [style.opacity]="opacityControl"
+                [ngClass]="{'focusedStackDisc': getFocusMapReference().discardFocusActive}"
+                (modifyAllButOneStackOpacityEvent)="modifyAllButOneStackOpacityParent($event)" 
+(setCardSelectedEvent)="setCardSelectedParent($event)"
+(socketEmitGameUpdateEvent)="socketEmitGameUpdateParent($event)"
+                [stack]="currentPerspective.isDiscarded" [stackType]="ALLSTACKTYPES.DISCARD"
+                [stackFocusIdentifier]="ALLSTACKIDENTIFIERS.DISCARD">
+              </app-card-stack >
+
+
+            </div>
+          </div>
+        </div>
+
+        <!--Bench/hand buttons Own bench/deck-->
+        <div class="col-12">
+          <div class="grid">
+            <div class="col-1">
+              <button pButton pRipple type="button" label="Bench" (mouseover)="toggleBench($event)"
+                (touchstart)="toggleBench($event)" class="p-button-sm"
+                [ngClass]="{'smallDisplayBtn':smallDisplay}"></button>
+              <button pButton pRipple (mouseover)="toggleHand($event)" (touchstart)="toggleHand($event)" type="button"
+                label="Hand" class="p-button-warning p-button-sm" [ngClass]="{'smallDisplayBtn':smallDisplay}"></button>
+            </div>
+            <ng-container>
+              <div *ngIf="!isHandShowing" class="col-9" style="text-align: right;">
+                <!--TODO need to guarantee space for X bench cards, 8 is threshold on small screens pcol9 nd to place overlay of count on bench card let them expand later...-->
+                <div class="grid">
+                  <div *ngFor="let bench of currentPerspective.bench; let j = index" class="col-2"
+                    [ngClass]="{'col-offset-1': j===0}">
+                    <app-card-stack [isPlayersTurn] = "currentPerspective.isTurn"
+                      [ngClass]="{
+                        'focusedStack0': j === 0 && getFocusMapReference().bench1FocusActive, 
+                        'focusedStack1': j === 1 && getFocusMapReference().bench2FocusActive,
+                        'focusedStack2': j === 2 && getFocusMapReference().bench3FocusActive,
+                        'focusedStack3': j === 3 && getFocusMapReference().bench4FocusActive,
+                        'focusedStack4': j === 4 && getFocusMapReference().bench5FocusActive}"
+                      [style.opacity]="opacityControl" 
+                      (modifyAllButOneStackOpacityEvent)="modifyAllButOneStackOpacityParent($event)" 
+(setCardSelectedEvent)="setCardSelectedParent($event)"
+(socketEmitGameUpdateEvent)="socketEmitGameUpdateParent($event)"
+                      [stack]="currentPerspective.bench[j]" [stackType]="ALLSTACKTYPES.BENCH1"
+                      [stackFocusIdentifier]="ALLSTACKIDENTIFIERS.BENCH1 + j">
+                    </app-card-stack >
+
+                  </div>
+                </div>
+                <!--for each bench, for each attached-->
+
+
+              </div>
+              <div *ngIf="isHandShowing" class="col-9" style="text-align: center;">
+                <app-card-stack [isPlayersTurn] = "currentPerspective.isTurn" [style.opacity]="opacityControl"
+                  [ngClass]="{'focusedStack0': getFocusMapReference().handFocusActive}"
+                  (modifyAllButOneStackOpacityEvent)="modifyAllButOneStackOpacityParent($event)" 
+(setCardSelectedEvent)="setCardSelectedParent($event)"
+(socketEmitGameUpdateEvent)="socketEmitGameUpdateParent($event)"
+                  [stack]="currentPerspective.inHand" [stackType]="ALLSTACKTYPES.HAND"
+                  [stackFocusIdentifier]="ALLSTACKIDENTIFIERS.HAND">
+                </app-card-stack >
+                <!-- <div style="display: inline;" *ngFor="let item of [].constructor(7); let i = index">
+                  <img
+                    [ngClass]="{'stackedCardsSpread': i >0, 'hoverCard':true, 'imageDiv':smallDisplay, 'imageDivMed': !smallDisplay}"
+                    src="{{backOfCard}}">
+                </div> -->
+              </div>
+            </ng-container>
+
+            <!--Deck only display 1, layer number overtop for deckcount-->
+            <div class="col-2" style="text-align: center;">
+
+              <div style="display: inline;" [style.opacity]="opacityControl">
+                <img [ngClass]="{'hoverCard':true, 'imageDiv':smallDisplay, 'imageDivMed': !smallDisplay}"
+                  src="{{backOfCard}}">
+              </div>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <!--Div for focused card!-->
+      <div *ngIf="this.isCardSelected">
+          <img [ngClass]="{'imageDivMed':smallDisplay, 'imageDivLg': !smallDisplay, 'absoluteFocusSelected':true}"
+          src="{{this.sourceImg}}">
+      </div>
+    </div>
+
+
+
+  </ng-template>
+</div>
+
+
+<ng-template #invalidDisplayView>
+  <div>
+    <p-dialog header="Error!" [(visible)]="invalidDisplay" [style]="{width: '50vw'}">
+      <h1>Larger display width required. please rotate your device or use a larger display to enjoy original PokemonTCG
+      </h1>
+
+    </p-dialog>
+  </div>
+</ng-template>

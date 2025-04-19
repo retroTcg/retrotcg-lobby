@@ -1,0 +1,42 @@
+<div class="pokepaper">
+  <div id="lobbyButtonDiv" class="text-center">
+
+    <!-- Select active deck-->
+
+
+
+
+    <div class="container decks">
+      <div *ngFor="let deck of decks | async"
+        [ngClass]="getActive() == deck? 'col-lg-2 col-md-3 col-sm-4 bordered': 'col-lg-2 col-md-3 col-sm-4 deck'"
+        (click)="setActive(deck)">
+
+        <div *ngIf="getActive() == deck" class="bubble">
+          <div class="bubble-text">
+            <h2>Selected</h2>
+          </div>
+        </div>
+
+        <img src={{deck.cards[0].imageUrl}} class="card-img-top img-fluid" alt="...">
+        <h2 class="card-title deckTitle"> {{ deck.name }} </h2>
+        <!-- <p class="dietr">{{ deck.dietaryRestrictions }}</p> -->
+
+      </div>
+    </div>
+
+
+
+    <button type="button" *ngIf="queueResponse == false" (click)="enterQueue()"
+      class="btn btn-lg btn-primary col-sm-2">Enter Lobby</button>
+
+    <div *ngIf="queueResponse == true">
+      <div class="spinner-border text-primary" role="status">
+        <span style="color: antiquewhite;" class="sr-only">Loading...</span>
+
+      </div>
+      <p style="color: antiquewhite;">Searching for opponent...</p>
+    </div>
+
+  </div>
+
+</div>

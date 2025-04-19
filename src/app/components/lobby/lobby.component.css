@@ -1,0 +1,124 @@
+/* .pokepaper{
+    background-image: url('/assets/pokeImage.jpg');
+    background-size: cover;
+    height: 100vh;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    
+} */
+.container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+.container.categories {
+    flex-wrap: wrap;
+}
+
+.category {
+    height: 5vh;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    margin: 10px;
+    font-weight: 800;
+    font-size: 1.25rem;
+}
+
+.cake {
+    background-image: url("https://rush-p2.s3.us-east-2.amazonaws.com/upload/category/cake30.jpg");
+}
+
+.pie {
+    background-image: url("https://rush-p2.s3.us-east-2.amazonaws.com/upload/category/pie30.jpg");
+}
+
+.pastry {
+    background-image: url("https://rush-p2.s3.us-east-2.amazonaws.com/upload/category/pastry30.jpg");
+}
+
+.frozen {
+    background-image: url("https://rush-p2.s3.us-east-2.amazonaws.com/upload/category/frozen30.jpg");
+}
+
+.all {
+    background-image: url("https://rush-p2.s3.us-east-2.amazonaws.com/upload/category/all30.jpg");
+    background-position: bottom;
+}
+
+.key {
+    font-size: .8rem;
+    text-align: right;
+    margin-top: 20px;
+}
+
+/*product card*/
+.product {
+    cursor: pointer;
+    margin: 15px;
+    padding: 0;
+}
+
+.container.decks {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 0 auto;
+
+}
+
+h2 {
+
+    border-radius: 3px;
+    font-size: 1.25rem;
+    font-family: sans-serif;
+}
+
+p {
+    color: antiquewhite;
+}
+
+img {
+    border-radius: 5px;
+}
+
+.dietr {
+    font-size: .75rem;
+    color: #696969;
+}
+
+#lobbyButtonDiv {
+    margin-top: 20vh;
+
+}
+
+.deck {
+    opacity: .5;
+
+    /* border-width:2px;
+    border-style:solid;
+    border-color:black; */
+
+}
+
+.deck:hover {
+    opacity: 1.0;
+}
+
+.deckTitle {
+    margin-top: 1rem;
+    background: #6b6b6b;
+    color: #fff;
+}
+
+.bubble-text {
+    background: #08d33b;
+    color: #fff;
+    border-radius: 3px;
+}

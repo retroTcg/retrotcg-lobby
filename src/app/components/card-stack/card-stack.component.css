@@ -1,0 +1,110 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+
+.minSize {
+
+    height: auto;
+    max-width: 10%;
+
+}
+
+.col-12 {
+    padding: 0rem !important;
+}
+
+.col-10 {
+    padding: 0rem !important;
+}
+
+.col-9 {
+    padding: 0rem !important;
+}
+
+.col-8 {
+    padding: 0rem !important;
+}
+
+.col-2 {
+    padding: 0rem !important;
+}
+
+.col-1 {
+    padding: 0rem !important;
+}
+
+.grid {
+    margin-right: 0rem !important;
+    margin-left: 0rem !important;
+    margin-top: 0rem !important;
+}
+
+/* .stackedCardsSemiTransparent{
+        margin-left: -2.5em;
+    } */
+.stackedCards {
+    margin-left: -3.1em;
+}
+
+.stackedCardsMed {
+    margin-left: -6em;
+}
+
+.stackedCardsSpread {
+    margin-left: -2em;
+}
+
+/* 
+  .outerHandLayer {
+    position: absolute;
+    bottom: 0em;
+    z-index: 2;
+  } */
+
+.imageDiv {
+    width: 53.06px;
+    height: 73.58px;
+}
+
+.imageDivMed {
+    width: 100px;
+    height: 138px;
+}
+
+
+
+.smallDisplayBtn {
+    width: 50px !important;
+    height: 35px !important;
+    font-size: .5rem;
+}
+
+.hoverCard:hover {
+    cursor: pointer;
+    border-width: .2em;
+    border-style: solid;
+    border-color: yellow;
+
+}
+
+@keyframes custom-progress-spinner-dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+    }
+
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+    }
+}
+
+/* .spinhov3DNoDisplay {
+      content-visibility: hidden;
+      
+    } */

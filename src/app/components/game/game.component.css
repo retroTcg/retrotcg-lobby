@@ -1,0 +1,233 @@
+/* You can add global styles to this file, and also import other style files */
+@keyframes spin3D {
+  from {
+    transform: rotateY(360deg)
+  }
+
+  to {
+    transform: rotateY(9000deg)
+  }
+}
+
+.spinhov3D {
+  animation-name: spin3D;
+  animation-duration: 10s;
+  animation-iteration-count: 200;
+  /* linear | ease | ease-in | ease-out | ease-in-out */
+  animation-timing-function: ease-in-out;
+
+}
+
+:host ::ng-deep .custom-spinner .p-progress-spinner-circle {
+  animation: custom-progress-spinner-dash 1.5s ease-in-out infinite, custom-progress-spinner-color 6s ease-in-out infinite;
+}
+
+.transform180 {
+  transform: rotate(180deg);
+}
+
+@keyframes custom-progress-spinner-color {
+
+  100%,
+  0% {
+    stroke: #16697A;
+  }
+
+  40% {
+    stroke: #489FB5;
+  }
+
+  66% {
+    stroke: #82C0CC;
+  }
+
+  80%,
+  90% {
+    stroke: #FFA62B;
+  }
+}
+
+.minSize {
+
+  height: auto;
+  max-width: 10%;
+
+}
+
+.col-12 {
+  padding: 0rem !important;
+}
+
+.col-10 {
+  padding: 0rem !important;
+}
+
+.col-9 {
+  padding: 0rem !important;
+}
+
+.col-8 {
+  padding: 0rem !important;
+}
+
+.col-2 {
+  padding: 0rem !important;
+}
+
+.col-1 {
+  padding: 0rem !important;
+}
+
+.grid {
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+  margin-top: 0rem !important;
+}
+
+/* .stackedCardsSemiTransparent{
+      margin-left: -2.5em;
+  } */
+/*
+//
+// Relative left margin dependent on screen position starting to avoid generating
+// new card stack in parent div to roughly 'center' the stacks
+*/
+
+.absoluteFocusSelected {
+  opacity: 1.0 !important;
+  position: absolute;
+  z-index: 9001;
+  margin: auto;
+  top: 1vh;
+  left: 80vw;
+  border-width: .2em;
+  border-style: solid;
+  border-color: blue;
+}
+.focusedStackDisc {
+  opacity: 1.0 !important;
+  position: absolute;
+  z-index: 9001;
+  margin: auto;
+  top: 40vh;
+  left:20vw;
+}
+.focusedStack0 {
+  opacity: 1.0 !important;
+  position: absolute;
+  z-index: 9001;
+  margin: auto;
+  top: 40vh;
+  left:35vw;
+}
+.focusedStack1 {
+  opacity: 1.0 !important;
+  position: absolute;
+  z-index: 9001;
+  margin: auto;
+  top: 40vh;
+  left:40vw;
+}
+/* 
+//Shared between 6 stacks, including hand, active, opp hand/active, bench 2 own/opp
+*/
+.focusedStack2 {
+  opacity: 1.0 !important;
+  position: absolute;
+  z-index: 9001;
+  margin: auto;
+  top: 40vh;
+  left:45vw;
+}
+.focusedStack3 {
+  opacity: 1.0 !important;
+  position: absolute;
+  z-index: 9001;
+  margin: auto;
+  top: 40vh;
+  left:50vw;
+}
+.focusedStack4 {
+  opacity: 1.0 !important;
+  position: absolute;
+  z-index: 9001;
+  margin: auto;
+  top: 40vh;
+  left:55vw;
+}
+
+.newClass{
+  color:green
+}
+
+.stackedCards {
+  margin-left: -3.1em;
+}
+
+.stackedCardsMed {
+  margin-left: -6em;
+}
+
+.stackedCardsSpread {
+  margin-left: -2em;
+}
+
+/* 
+.outerHandLayer {
+  position: absolute;
+  bottom: 0em;
+  z-index: 2;
+} */
+
+.imageDiv {
+  width: 53.06px;
+  height: 73.58px;
+}
+
+.imageDivMed {
+  width: 100px;
+  height: 138px;
+}
+
+.imageDivLg {
+  width: 121px;
+  height: 167px;
+
+}
+
+
+.smallDisplayBtn {
+  width: 50px !important;
+  height: 35px !important;
+  font-size: .5rem;
+}
+
+.hoverCard:hover {
+  cursor: pointer;
+  border-width: .2em;
+  border-style: solid;
+  border-color: yellow;
+
+}
+
+@keyframes custom-progress-spinner-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+/* .spinhov3DNoDisplay {
+    content-visibility: hidden;
+    
+  } */

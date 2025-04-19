@@ -1,0 +1,53 @@
+<header *ngIf="isHeaderActive()" class="header">
+  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand nav-link" routerLink="home" routerLinkActive="active"><h1>Allegedly TCG</h1></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button> -->
+
+  <!-- 
+          We can add d-none to the class= of something we don't want showing
+          This could help when we need to start hiding buttons on specific pages.
+        -->
+  <!-- <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item " *ngIf="!isLoggedIn()">
+              <a routerLink="login" routerLinkActive="active" class="nav-link">Login</a>
+            </li>
+              <li class="nav-item" *ngIf="isLoggedIn()">
+                <a [routerLink]="" (click)="clearCookies()" routerLinkActive="active" class="nav-link">Logout</a>
+              </li>
+          </ul>
+        </div>
+      </nav> -->
+
+
+  <p-toolbar class="mytoolbar">
+    <div class="p-toolbar-group-left" pRipple>
+      <a style="color:white" class="navbar-brand nav-link" routerLink="home" routerLinkActive="active">
+        <h1 style="font-family: monospace;">Allegedly TCG</h1>
+      </a>
+
+    </div>
+
+    <div class="p-toolbar-group-right">
+      <p-button *ngIf="isLoggedIn()" [routerLink]="" (click)="clearCookies()" icon="pi pi-times" label="Logout"
+        styleClass="p-button-danger"></p-button>
+      <p-button *ngIf="!isLoggedIn()" routerLink="login" routerLinkActive="active" (click)="clearCookies()"
+        label="Login" styleClass="p-button-success"></p-button>
+
+    </div>
+  </p-toolbar>
+
+  <!-- <p-menubar>
+        <ng-template pTemplate="start">
+          <a class="navbar-brand nav-link" routerLink="home" routerLinkActive="active"><h1>Allegedly TCG</h1></a>
+        </ng-template>
+        <ng-template pTemplate="end">
+          <a *ngIf="!isLoggedIn()" routerLink="login" routerLinkActive="active" class="nav-link">Login</a>
+      
+
+        </ng-template>
+    </p-menubar> -->
+
+</header>

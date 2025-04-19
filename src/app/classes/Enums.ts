@@ -1,0 +1,35 @@
+
+//IMPORTANT THIS MATCHES THE BACKEND FOR APPROPRIATE REQUEST INTENTION RESOLUTION
+export enum StackFocusIdentifierEnum { 
+    HAND = 0,
+    ACTIVE,
+    DISCARD,
+    PRIZE,
+    DECK,
+    BENCH1,
+    BENCH2,
+    BENCH3,
+    BENCH4,
+    BENCH5,
+    OPPPRIZE,
+    OPPACTIVE,
+    OPPDISC,
+    OPPBENCH1,
+    OPPBENCH2,
+    OPPBENCH3,
+    OPPBENCH4,
+    OPPBENCH5
+
+}
+
+
+export enum PlayerRequestTypesEnum {
+    ENERGY_ATTACH = 0,
+    TRAINER_ACTIVATE,
+    RETREAT_ORDER,
+    EVOLVE_ORDER,
+    ATTACK_ORDER,
+    POKE_POWER,
+    SPECIAL_RESPONSE
+
+}
