@@ -30,7 +30,7 @@ export class LobbyComponent implements OnInit {
   ngOnInit(): void {
     console.log("requesting socket....")
     //TODO rewire socket endpoint to configured socket.io ep on node
-    this.roomService.socket = io.connect('http://localhost:8080');//connection event called here
+    this.roomService.socket = io.connect('https://pokemongo-be-master.onrender.com');//connection event called here
     console.log("Checking if login active from inside of lobbycomponent");
 
     console.log(this.loginService.sessionActive);
